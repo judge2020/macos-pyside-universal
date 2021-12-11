@@ -7,7 +7,7 @@ jobs:
     runs-on: macos-11
     concurrency: main
     steps:
-      - uses: ashutoshvarma/setup-ninja@master
+      - run: brew install Ninja
       - uses: actions/checkout@v2
       - name: setup
         run: |
@@ -24,7 +24,7 @@ jobs:
           export OUTPWD=$PWD/qtout
           mkdir qt6-build
           cd qt6-build
-          cmake -GNinja -DCMAKE_INSTALL_PREFIX=$OUTPWD -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -D QT_NO_BUILD_TESTS=ON ../qt5
+          cmake -GNinja -DCMAKE_INSTALL_PREFIX=$OUTPWD -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DQT_NO_BUILD_TESTS=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ ../qt5 
           cmake --build . --parallel -G "Ninja"
           cmake --install .
       - name: Archive code coverage results
