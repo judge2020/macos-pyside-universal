@@ -7,6 +7,7 @@ jobs:
     runs-on: macos-11
     concurrency: main
     steps:
+      - uses: ashutoshvarma/setup-ninja@master
       - uses: actions/checkout@v2
       - name: setup
         run: |
