@@ -17,15 +17,15 @@ jobs:
       - name: get
         run: |
           cd qt5
-          perl init-repository --module-subset=default,-qtwebengine
+          perl init-repository --module-subset=default,-qtwebengine,-qtwayland
       - name: build
         run: |
           mkdir qtout
           export OUTPWD=$PWD/qtout
           mkdir qt6-build
           cd qt6-build
-          ../qt5/configure -prefix $OLDPWD -- -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -D QT_NO_BUILD_TESTS=ON
-          cmake --build . --parallel
+          cmake -GNinja -DCMAKE_INSTALL_PREFIX=$OUTPWD -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -D QT_NO_BUILD_TESTS=ON ../qt5
+          cmake --build . --parallel -G "Ninja"
           cmake --install .
       - name: Archive code coverage results
         uses: actions/upload-artifact@v2
